@@ -1,0 +1,7 @@
+﻿  Core.cpp
+d:\source\repos\directx\corelib\sound.h(4): fatal error C1083: 포함 파일을 열 수 없습니다. 'fmod.hpp': No such file or directory
+  Sound.cpp
+d:\source\repos\directx\corelib\sound.h(4): fatal error C1083: 포함 파일을 열 수 없습니다. 'fmod.hpp': No such file or directory
+  SoundMgr.cpp
+d:\source\repos\directx\corelib\sound.h(4): fatal error C1083: 포함 파일을 열 수 없습니다. 'fmod.hpp': No such file or directory
+  코드를 생성하고 있습니다...

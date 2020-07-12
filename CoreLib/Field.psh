@@ -1,0 +1,120 @@
+
+Texture2D g_txDiffuse : register(t0); //Output Texture
+
+Texture2D g_txAlpha : register(t1);
+Texture2D g_txSplt1 : register(t2);
+Texture2D g_txSplt2 : register(t3);
+Texture2D g_txSplt3 : register(t4);
+
+//TextureCube g_txDiffuse : register(t0);
+SamplerState sample0 : register(s0);
+SamplerState sample1 : register(s1);
+
+struct PS_INPUT
+{
+	float4 Position		: SV_POSITION;
+	float3 Normal		: NORMAL;
+	float4 Color		: COLOR0;
+	float2 Texture		: TEXTUREO;
+};
+
+struct VS_OUTstruct
+{
+	float4 Position		: SV_POSITION;
+	float4 Normal		: NORMAL;
+	float4 Color		: COLOR0;
+	float2 Texture		: TEXTUREO;
+	///
+	float4 Diffuse		: TEXTURE1;
+};
+cbuffer cb0 : register(b0)
+{
+	matrix g_MatWorld : packoffset(c0);
+	matrix g_MatView : packoffset(c4);
+	matrix g_MatProj : packoffset(c8);
+	float4 g_Color : packoffset(c12);
+	float g_fTime : packoffset(c13.x);
+	float g_fFieldWidth : packoffset(c13.y);
+}
+cbuffer cb1 : register(b1)
+{
+	matrix	matWorldInverse : packoffset(c0);
+
+	float4	AmbientMaterial : packoffset(c4);
+	float4	DiffuseMaterial : packoffset(c5);
+
+	float4	AmbientLight : packoffset(c6);
+	float4	DiffuseLight : packoffset(c7);
+
+	float4	LightPos : packoffset(c8);		//순서바뀜 시연
+	float3	LightDir : packoffset(c9);
+}
+
+float4 PS(PS_INPUT input) : SV_TARGET
+{
+	return g_txDiffuse.Sample(sample0, input.Texture) * input.Color;
+}
+
+float4 Diffuse(float3 vNormal)
+{
+	float fIntensity = max(0, dot(vNormal, normalize(-LightDir)));
+	float4 diffuse = AmbientMaterial * AmbientLight + (DiffuseMaterial * DiffuseLight * fIntensity);
+	return diffuse;
+}
+float4 PS_Test(VS_OUTstruct input) : SV_Target
+{
+	float4 vTexColor = g_txDiffuse.Sample(sample0, input.Texture);
+	float4 vFinalColor = vTexColor * Diffuse(input.Normal) * input.Color;
+	return vFinalColor;
+}
+
+float4 PS_FieldTest(VS_OUTstruct input) : SV_Target
+{
+	float4 vTexColor1 = g_txSplt1.Sample(sample0, input.Texture);
+	float4 vTexColor2 = g_txSplt2.Sample(sample0, input.Texture);
+	float4 vTexColor3 = g_txSplt3.Sample(sample0, input.Texture);
+
+	float2 vAlphaCoord = float2(input.Texture.x / g_fFieldWidth, input.Texture.y / g_fFieldWidth);
+
+	float4 fAlpha = g_txAlpha.Sample(sample1, vAlphaCoord); 
+
+	float4 base = g_txDiffuse.Sample(sample0, input.Texture);
+
+	float4 blendedcolor;
+	blendedcolor = lerp(base, vTexColor1, fAlpha.y);
+	blendedcolor = lerp(blendedcolor, vTexColor2, fAlpha.z);
+	blendedcolor = lerp(blendedcolor, vTexColor3, fAlpha.w);
+
+	float4 vFinalColor = blendedcolor * Diffuse(input.Normal) * input.Color;
+
+	return vFinalColor;
+
+	//return blendedcolor * input.Color;
+}
+
+float4 PS_ShadowOn(VS_OUTstruct input) : SV_Target // 그림자
+{
+	float4 vTexColor1 = g_txDiffuse.Sample(sample0, input.Texture); 
+	return lerp(vTexColor1, Diffuse(input.Normal), 0.3f);
+}
+
+float4 PS_Screen(VS_OUTstruct input) : SV_Target
+{
+	float4 vTexColor = g_txDiffuse.Sample(sample0, input.Texture);
+
+	return vTexColor;
+}
+float4 PS_Line(PS_INPUT input) : SV_TARGET
+{
+	return input.Color;
+}
+
+float4 PS_Debug(PS_INPUT input) : SV_TARGET
+{
+	return g_Color;
+}
+
+float4 PS_Shadow(PS_INPUT input) : SV_Target
+{
+	return g_Color;
+}
