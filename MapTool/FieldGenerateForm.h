@@ -42,7 +42,7 @@ public:
 //	afx_msg void OnNMCustomdrawHeightSlider(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	CEdit m_HeightEditBox;
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+//	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 //	virtual BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 	afx_msg void OnEnChangeHeightEdit();
 //	Int m_testint;

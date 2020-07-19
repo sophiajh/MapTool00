@@ -24,6 +24,17 @@ cbuffer cb1 : register(b1)
 	float3	vEyePos	: packoffset(c11);
 }
 //
+
+
+cbuffer cb2 : register(b2)
+{
+	float	g_Coordx : packoffset(c0.x);
+	float	g_Coordy : packoffset(c0.y);
+	float	g_Coordz : packoffset(c0.z);
+	float	temp : packoffset(c0.w);
+	float	g_Radius : packoffset(c1.x);
+}
+
 struct VS_INstruct
 {
 	float3 Position		: POSITION;
@@ -61,7 +72,6 @@ VS_OUTstruct VS(VS_INstruct vIn)
 	vOut.Position = mul(vOut.Position, g_MatProj);
 	vOut.Normal = vIn.Normal;
 	//vOut.IncAng = mul(vOut.IncAng, g_MatProj);
-
 
 	//vOut.Normal =  normalize(mul(vIn.Normal, (float3x3)matWorldInverse)); //vIn.Normal;//
 	//vOut.Normal = vIn.Normal;

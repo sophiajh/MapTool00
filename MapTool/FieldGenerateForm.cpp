@@ -42,7 +42,7 @@ BEGIN_MESSAGE_MAP(FieldGenerateForm, CFormView)
 	ON_BN_CLICKED(IDC_HEIGHT, &FieldGenerateForm::OnBnClickedHeight)
 //	ON_NOTIFY(NM_CUSTOMDRAW, IDC_HEIGHT_SLIDER, &FieldGenerateForm::OnNMCustomdrawHeightSlider)
 	ON_WM_HSCROLL()
-	ON_WM_CREATE()
+//	ON_WM_CREATE()
 	ON_EN_CHANGE(IDC_HEIGHT_EDIT, &FieldGenerateForm::OnEnChangeHeightEdit)
 	ON_CBN_SELCHANGE(IDC_COMBO1, &FieldGenerateForm::OnCbnSelchangeCombo1)
 //	ON_WM_INITMENU()
@@ -82,8 +82,10 @@ void FieldGenerateForm::OnBnClickedFieldgenbutton()
 	
 	//(2의 n승 +1)만 설정 가능
 	int iCell =	m_FieldSizeCtl.GetCurSel() + 1;
-	
-	pApp->m_Tool.m_TestField = &(pApp->m_Tool.CreateField(std::pow(2, iCell) + 1, std::pow(2, iCell) + 1));
+	pApp->m_Tool.m_TestField = std::move(pApp->m_Tool.CreateField(std::pow(2, iCell) + 1, std::pow(2, iCell) + 1));
+	//FieldHeight* temp = pApp->m_Tool.CreateField(std::pow(2, iCell) + 1, std::pow(2, iCell) + 1);
+	//pApp->m_Tool.m_TestField.reset(pApp->m_Tool.CreateField(std::pow(2, iCell) + 1, std::pow(2, iCell) + 1));
+	//pApp->m_Tool.m_TestField = pApp->m_Tool.CreateField(std::pow(2, iCell) + 1, std::pow(2, iCell) + 1);
 
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }
@@ -180,16 +182,16 @@ void FieldGenerateForm::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBa
 }
 
 
-int FieldGenerateForm::OnCreate(LPCREATESTRUCT lpCreateStruct)
-{
-	if (CFormView::OnCreate(lpCreateStruct) == -1)
-		return -1;
-	//m_HeightSld.SetRange(-50, 50);
-	//m_FieldSizeCtl.AddString(L"");
-	// TODO:  여기에 특수화된 작성 코드를 추가합니다.
-	
-	return 0;
-}
+//int FieldGenerateForm::OnCreate(LPCREATESTRUCT lpCreateStruct)
+//{
+//	if (CFormView::OnCreate(lpCreateStruct) == -1)
+//		return -1;
+//	//m_HeightSld.SetRange(-50, 50);
+//	//m_FieldSizeCtl.AddString(L"");
+//	// TODO:  여기에 특수화된 작성 코드를 추가합니다.
+//	
+//	return 0;
+//}
 
 
 //BOOL FieldGenerateForm::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext)
@@ -262,7 +264,6 @@ void FieldGenerateForm::OnInitialUpdate()
 	m_FieldSizeCtl.InsertString(-1, _T("128 * 128"));
 
 	m_FieldSizeCtl.SetCurSel(0);
-
 
 	
 	//CImageList cImgList;

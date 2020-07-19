@@ -8,7 +8,9 @@
 #include "DXRT.h"
 #include "Select.h"
 #include "TextureManager.h"
-
+#define _CRTDBG_MAP_ALLOC  
+#include <stdlib.h>  
+#include <crtdbg.h>  
 
 struct LIGHT_CONSTANT_BUFFER
 {
@@ -42,9 +44,11 @@ public:
 	bool Frame()	override;
 	bool Release()	override;
 
-	FieldHeight& CreateField(int iRow, int iCol);
+	//FieldHeight& CreateField(int iRow, int iCol);
+	std::unique_ptr<FieldHeight> CreateField(int iRow, int iCol);
 
-	FieldHeight* m_TestField;
+	unique_ptr<FieldHeight> m_TestField;
+	//FieldHeight* m_TestField;
 
 	QuadTree	m_Quad;
 	DXRT		m_FullRT;
@@ -55,7 +59,7 @@ public:
 	Select		m_Select;
 
 	BoxObject	m_Obj;
-
+	PlaneObject m_Brush;
 	D3DXMATRIX	m_LightMat;
 
 	D3DXVECTOR3							m_vLightVector;

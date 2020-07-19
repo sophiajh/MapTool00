@@ -1,8 +1,16 @@
 #include "pch.h"
 #include "Sample.h"
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
 
 bool Sample::Init()
 {
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	_CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_DEBUG);
+
 	if (!m_BasisLine.Create(m_pDevice, L"../CoreLib/HLSL.vsh", L"../CoreLib/HLSL.psh", nullptr, "VS_Line", "PS_Line"))
 		return false;
 
@@ -47,6 +55,14 @@ bool Sample::Init()
 
 	m_pConstantBufferLight.Attach(DX::CreateConstantBuffer( m_pDevice, &m_cbLight, 1, sizeof(LIGHT_CONSTANT_BUFFER)));
 
+	if (!m_Brush.Create(m_pDevice, L"../CoreLib/HLSL.vsh", L"../CoreLib/Field.psh", L"../../data/bitmap/B_Hornet2.png", "VS", "PS_Test"))
+	{
+		return false;
+	}
+	m_Brush.m_VertexList[0].Position = D3DXVECTOR3(-1.0f, 0.0f, 1.0f);
+	m_Brush.m_VertexList[1].Position = D3DXVECTOR3(1.0f, 0.0f, 1.0f);
+	m_Brush.m_VertexList[2].Position = D3DXVECTOR3(1.0f, 0.0f, -1.0f);
+	m_Brush.m_VertexList[3].Position = D3DXVECTOR3(-1.0f, 0.0f, -1.0f);
 	return true;
 }
 
@@ -72,7 +88,7 @@ bool Sample::Frame()
 		m_Select.Frame();
 	}
 	m_Obj.Frame();
-
+	//m_pCurrCamera->Frame();
 	m_pCurrCamera->CreateProjMatrix(D3DX_PI / 4, (float)g_rtClient.right / (float)g_rtClient.bottom, 1.0f, 1000.0f);
 
 	return true;
@@ -80,6 +96,8 @@ bool Sample::Frame()
 
 bool Sample::Render()
 {	
+	DX::ApplyDSS(m_pDeviceContext, DX::DxState::m_pDepthEnable);
+	DX::ApplyBS(m_pDeviceContext, DX::DxState::m_pAlphaBlend);
 	{
 		m_FullRT.Begin(m_pDeviceContext);
 		m_BasisLine.SetMatrix(nullptr, (D3DXMATRIX*)&m_pCurrCamera->m_MatView, (D3DXMATRIX*)&m_pCurrCamera->m_matProj);
@@ -109,15 +127,13 @@ bool Sample::Render()
 		D3DXMatrixTranspose(&matInvWorld, &matInvWorld);
 		D3DXMatrixTranspose(&m_cbLight.g_matInvWorld, &matInvWorld);
 
-		m_pDeviceContext->UpdateSubresource(m_pConstantBufferLight.Get(), 0, NULL, &m_cbLight, 0, 0);
 		m_pDeviceContext->VSSetConstantBuffers(1, 1, m_pConstantBufferLight.GetAddressOf());
 		m_pDeviceContext->PSSetConstantBuffers(1, 1, m_pConstantBufferLight.GetAddressOf());
 
-
 		D3DXMatrixIdentity(&m_cbLight.g_matInvWorld);
 		m_pDeviceContext->UpdateSubresource(m_pConstantBufferLight.Get(), 0, NULL, &m_cbLight, 0, 0);
-		//m_Obj.SetMatrix(nullptr, (D3DXMATRIX*)&m_pCurrCamera->m_MatView, (D3DXMATRIX*)&m_pCurrCamera->m_matProj);
-		//m_Obj.Render(m_pDeviceContext);
+	
+
 
 		if (m_TestField)
 		{
@@ -125,17 +141,10 @@ bool Sample::Render()
 			//color변경 업데이트.
 			//m_TestField->m_pAlphaTexture.Get()
 			//m_pDeviceContext->PSSetShaderResources(1, 1, &m_TestField->m_pAlphaTexture.GetAddressOf);
-			m_pDeviceContext->PSSetShaderResources(1, 1, m_TestField->m_pAlphaSRV.GetAddressOf());
-			m_pDeviceContext->PSSetShaderResources(2, 1, &m_TestField->m_pSplattingPatternList[0]); //물
-			m_pDeviceContext->PSSetShaderResources(3, 1, &m_TestField->m_pSplattingPatternList[1]); //모래
-			m_pDeviceContext->PSSetShaderResources(4, 1, &m_TestField->m_pSplattingPatternList[2]); //나무
-			
-			m_pDeviceContext->UpdateSubresource(m_TestField->m_DxHelper.m_pVertexBuffer.Get(), 0, NULL, &m_TestField->m_VertexList.at(0), 0, 0);
-
+			//m_pDeviceContext->UpdateSubresource(m_TestField->m_DxHelper.m_pVertexBuffer.Get(), 0, NULL, &m_TestField->m_VertexList.at(0), 0, 0);
 			//m_TestField->Render(m_pDeviceContext);
 			m_Quad.Render(m_pDeviceContext);
-			m_Select.Render(m_pDeviceContext);
-
+			//m_Select.Render(m_pDeviceContext);
 		}
 	}
 	m_FullRT.End(m_pDeviceContext);
@@ -152,6 +161,8 @@ bool Sample::Render()
 		if (m_TestField)
 		{
 			m_TestField->SetMatrix(nullptr, (D3DXMATRIX*)&m_MinimapCam.m_MatView, (D3DXMATRIX*)&m_pCurrCamera->m_matProj);
+			m_pDeviceContext->PSSetShaderResources(0, 1, m_TestField->m_FieldRT.m_pSRView.GetAddressOf());
+			
 			m_Quad.Render(m_pDeviceContext);
 		}
 		DX::ApplyBS(m_pDeviceContext, DX::DxState::m_pAlphaBlend);
@@ -181,10 +192,13 @@ bool Sample::Release()
 			m_TestField->m_pSrcAlphaTexture.Get()->Release();
 		if (m_TestField->m_pDestAlphaTexture)
 			m_TestField->m_pDestAlphaTexture.Get()->Release();
-		m_TestField->Release();
+		//m_TestField->Release();
+		//delete m_TestField;
+		//m_TestField = nullptr;
 	}
-	return true;
+	_CrtDumpMemoryLeaks();
 
+	return true;
 }
 
 Sample::Sample()
@@ -194,13 +208,17 @@ Sample::Sample()
 
 Sample::~Sample()
 {
-	
 }
 
-FieldHeight& Sample::CreateField(int iRow, int iCol)
+std::unique_ptr<FieldHeight> Sample::CreateField(int iRow, int iCol)
 {
-	static FieldHeight * UserSetField = new FieldHeight;
+	auto UserSetField = make_unique<FieldHeight>();
+	//std::unique_ptr<FieldHeight> UserSetField(new FieldHeight);
+	//unique_ptr<FieldHeight> UserSetField;
+	//unique라 createfield벗어나면 해제됌.
 
+	//FieldHeight* UserSetField = new FieldHeight;
+	
 	FieldDesc fd;
 	fd.fCellDistance = 1.0f;
 	fd.iNumCols = iCol;
@@ -226,15 +244,18 @@ FieldHeight& Sample::CreateField(int iRow, int iCol)
 	{
 		UserSetField->m_HeightList[i] = -1.0f;
 	}
-	UserSetField->Create(m_pDevice, L"../CoreLib/HLSL.vsh", L"../CoreLib/Field.psh", L"../../data/bitmap/Tile57.jpg", "VS", "PS_FieldTest");
-	UserSetField->m_pPattern = UserSetField->m_DxHelper.m_pSRV;
-	UserSetField->LoadTexture(fd.szCubeFile.c_str());
-	UserSetField->m_pCube = UserSetField->m_DxHelper.m_pSRV;
+	
+	UserSetField->m_pDeviceContext = m_pDeviceContext;
+	UserSetField->m_FieldBrush = m_Brush;
+
+	UserSetField->Create(m_pDevice, L"../CoreLib/HLSL.vsh", L"../CoreLib/Field.psh", L"../../data/bitmap/Tile57.jpg", "VS", "PS_FieldSplatting");
+	UserSetField->m_pPattern.Attach(UserSetField->m_DxHelper.m_pSRV.Get());
+	//UserSetField->LoadTexture(fd.szCubeFile.c_str());
+	//UserSetField->m_pCube = UserSetField->m_DxHelper.m_pSRV;
 
 	UserSetField->m_ConstBuffer.etc[1] = fd.iNumCols - 1;
 
-
-	m_Quad.BuildQuadField(UserSetField);
+	m_Quad.BuildQuadField(UserSetField.get());
 	m_Quad.CreateSharedIndex();
 
 	int jIndex = TextureManager::GetInstance().Load(m_pDevice, L"../../data/bitmap/031.bmp"); //물
@@ -246,39 +267,40 @@ FieldHeight& Sample::CreateField(int iRow, int iCol)
 	//UserSetField->m_pPattern = TextureManager::GetInstance().GetPtr(tIndex)->m_pSRV;
 	
 	m_Select.SetSelect(*UserSetField, *m_pCurrCamera, m_Quad);
-	UserSetField->m_pDeviceContext = m_pDeviceContext;
 	
-	////Create AlphaTexture///////////////////// USING MAP
+	////Create AlphaTexture///////////////////// USING RenderTarget
 
-	HRESULT hr = S_OK;
-	D3D11_TEXTURE2D_DESC td;
-	ZeroMemory(&td, sizeof(D3D11_TEXTURE2D_DESC));
-	td.Width = iCol * UserSetField->m_iNumCols;// *UserSetField->m_ftxOffSetU;
-	td.Height = iRow * UserSetField->m_iNumRows;// *UserSetField->m_ftxOffSetV;
-	td.MipLevels = 1;
-	td.SampleDesc.Count = 1;
-	td.SampleDesc.Quality = 0;
-	td.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	td.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE | D3D11_CPU_ACCESS_READ;
-	td.Usage = D3D11_USAGE_STAGING;
-	td.BindFlags = 0;	
-	td.ArraySize = 1;	   
-	
-	if (FAILED(hr = m_pDevice->CreateTexture2D(&td, 0, UserSetField->m_pSrcAlphaTexture.GetAddressOf())))
-	{
-		return *UserSetField;
-	}
-	td.Usage = D3D11_USAGE_DEFAULT;
-	td.BindFlags = D3D11_BIND_SHADER_RESOURCE;// 0;// D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
-	if (FAILED(hr = m_pDevice->CreateTexture2D(&td, NULL, UserSetField->m_pDestAlphaTexture.GetAddressOf())))
-	{
-		return *UserSetField;
-	}
-	if (FAILED(hr = m_pDevice->CreateShaderResourceView(UserSetField->m_pDestAlphaTexture.Get(), NULL, UserSetField->m_pAlphaSRV.GetAddressOf())))
-	{
-		return *UserSetField;
-	}	
+	//UserSetField->m_pFieldRT->Create(m_pDevice, UserSetField->m_iNumCols*UserSetField->m_fCellDistance*UserSetField->m_iNumCols, UserSetField->m_iNumRows*UserSetField->m_fCellDistance*UserSetField->m_iNumRows);
+
+	////Create AlphaTexture///////////////////// USING MAP
+	//HRESULT hr = S_OK;
+	//D3D11_TEXTURE2D_DESC td;
+	//ZeroMemory(&td, sizeof(D3D11_TEXTURE2D_DESC));
+	//td.Width = iCol * UserSetField->m_iNumCols;// *UserSetField->m_ftxOffSetU;
+	//td.Height = iRow * UserSetField->m_iNumRows;// *UserSetField->m_ftxOffSetV;
+	//td.MipLevels = 1;
+	//td.SampleDesc.Count = 1;
+	//td.SampleDesc.Quality = 0;
+	//td.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	//td.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE | D3D11_CPU_ACCESS_READ;
+	//td.Usage = D3D11_USAGE_STAGING;
+	//td.BindFlags = 0;	
+	//td.ArraySize = 1;	   	
+	//if (FAILED(hr = m_pDevice->CreateTexture2D(&td, 0, UserSetField->m_pSrcAlphaTexture.GetAddressOf())))
+	//{
+	//	return *UserSetField;
+	//}
+	//td.Usage = D3D11_USAGE_DEFAULT;
+	//td.BindFlags = D3D11_BIND_SHADER_RESOURCE;// 0;// D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+	//if (FAILED(hr = m_pDevice->CreateTexture2D(&td, NULL, UserSetField->m_pDestAlphaTexture.GetAddressOf())))
+	//{
+	//	return *UserSetField;
+	//}
+	//if (FAILED(hr = m_pDevice->CreateShaderResourceView(UserSetField->m_pDestAlphaTexture.Get(), NULL, UserSetField->m_pAlphaSRV.GetAddressOf())))
+	//{
+	//	return *UserSetField;
+	//}	
 	//////////////////////////////////////
-	return *UserSetField;
+	return UserSetField;
 
 }
