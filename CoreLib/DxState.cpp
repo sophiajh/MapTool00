@@ -4,6 +4,9 @@ namespace DX
 {
 	ID3D11BlendState*	DxState::m_pAlphaBlend = 0;
 	ID3D11BlendState*	DxState::m_pAlphaBlendDisable = 0;
+	//
+	ID3D11BlendState*	DxState::m_pAlphaBlend2 = 0;
+	ID3D11BlendState*	DxState::m_pAlphaBlendMinus = 0;
 
 	ID3D11RasterizerState*	DxState::m_pRSWireFrame = 0;
 	ID3D11RasterizerState*	DxState::m_pRSSolidFrame = 0;
@@ -100,7 +103,17 @@ namespace DX
 		{
 			return;
 		}
-
+		bd.RenderTarget[0].BlendEnable = TRUE;
+		bd.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
+		if (FAILED(hr = pd3dDevice->CreateBlendState(&bd, &m_pAlphaBlend2)))
+		{
+			return;
+		}
+		bd.RenderTarget[0].BlendOp = D3D11_BLEND_OP_REV_SUBTRACT;
+		if (FAILED(hr = pd3dDevice->CreateBlendState(&bd, &m_pAlphaBlendMinus)))
+		{
+			return;
+		}
 		//Rasterizer¼³Á¤
 		D3D11_RASTERIZER_DESC RSDesc;
 		ZeroMemory(&RSDesc, sizeof(D3D11_RASTERIZER_DESC));
@@ -128,12 +141,19 @@ namespace DX
 	{
 		if (m_pAlphaBlend)			m_pAlphaBlend->Release();
 		if (m_pAlphaBlendDisable)	m_pAlphaBlendDisable->Release();
+		if (m_pAlphaBlend2)			m_pAlphaBlend2->Release();
+		if (m_pAlphaBlendMinus)		m_pAlphaBlendMinus->Release();
+
+
 
 		if (m_pRSWireFrame)			m_pRSWireFrame->Release();
 		if (m_pRSSolidFrame)		m_pRSSolidFrame->Release();
 
 		m_pAlphaBlend = 0;
 		m_pAlphaBlendDisable = 0;
+		m_pAlphaBlend2 = 0;
+		m_pAlphaBlendMinus = 0;
+
 		m_pRSWireFrame = 0;
 		m_pRSSolidFrame = 0;
 	}	

@@ -1,7 +1,5 @@
 #pragma once
 #include "Object.h"
-//#include "Matrix.h"
-#include "Model.h"
 
 class PlaneObject :public Model
 {
@@ -37,5 +35,18 @@ public:
 public:
 	LineObject();
 	~LineObject();
+
+};
+
+class AxisObject : public LineObject
+{
+
+public:
+	HRESULT CreateVertexData();
+	bool PostRender(ID3D11DeviceContext* pContext);
+
+public:
+	AxisObject();
+	~AxisObject();
 
 };

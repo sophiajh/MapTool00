@@ -271,7 +271,7 @@ namespace DX
 		return pBuffer;
 	}
 	
-	void DxHelperEx::PreRender(ID3D11DeviceContext* pContext, UINT iSize)
+	void DxHelperEx::PreRender(ID3D11DievceContext* pContext, UINT iSize)
 	{
 		pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 

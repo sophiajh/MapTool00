@@ -13,10 +13,10 @@ public:
 	TCHAR		m_csBuffer[MAX_PATH];
 	float		m_fRuntime;
 public:
-	bool       Init();
-	bool       Frame();
+	bool		Init();
+	bool		Frame();
 	//bool       Render();//렌더 아직 없음
-	bool       Release();
+	bool		Release();
 	float		GetRuntime();
 public:
 	Timer();

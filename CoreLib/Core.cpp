@@ -142,6 +142,14 @@ bool Core::CoreFrame()
 		{
 			m_pCurrCamera->Right();
 		}
+		if (g_ActionInput.bQKey)
+		{
+			m_pCurrCamera->Down();
+		}
+		if (g_ActionInput.bEKey)
+		{
+			m_pCurrCamera->Up();
+		}
 	}
 	m_pCurrCamera->Frame();
 		m_Timer.Frame();

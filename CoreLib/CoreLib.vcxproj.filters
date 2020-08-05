@@ -99,6 +99,12 @@
     <ClCompile Include="Frusturm.cpp">
       <Filter>Camera</Filter>
     </ClCompile>
+    <ClCompile Include="QuadTree.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Select.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision.h">
@@ -185,11 +191,24 @@
     <ClInclude Include="Frusturm.h">
       <Filter>Camera</Filter>
     </ClInclude>
+    <ClInclude Include="QuadTree.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Select.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="HLSL.vsh" />
+    <None Include="HLSL.psh" />
+    <None Include="..\..\MapTool\CoreLib\Field.psh" />
+    <None Include="..\..\MapTool\CoreLib\HLSL.vsh" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="HLSL.psh" />
+    <ResourceCompile Include="DXCoreLib.rc">
+      <Filter>리소스 파일</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

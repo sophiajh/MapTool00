@@ -123,6 +123,38 @@ bool Collision::SphereInSphere(RECT rt1, RECT rt2) //좌표에 길이 받음!~
 	return false;
 }
 
+bool Collision::RayToAABB(Ray* pRay, KJHBOX* pBox)
+{
+	D3DXVECTOR3 vDir = pRay->Direction;
+	D3DXVECTOR3 tMin;
+	tMin.x = (pBox->vMin.x - pRay->Origin.x) / (vDir.x + 0.0001f);
+	tMin.y = (pBox->vMin.y - pRay->Origin.y) / (vDir.y + 0.0001f);
+	tMin.z = (pBox->vMin.z - pRay->Origin.z) / (vDir.z + 0.0001f);
+	D3DXVECTOR3 tMax;
+	tMax.x = (pBox->vMax.x - pRay->Origin.x) / (vDir.x + 0.0001f);
+	tMax.y = (pBox->vMax.y - pRay->Origin.y) / (vDir.y + 0.0001f);
+	tMax.z = (pBox->vMax.z - pRay->Origin.z) / (vDir.z + 0.0001f);
+
+	D3DXVECTOR3 real_Min;
+	real_Min.x = min(tMin.x, tMax.x);
+	real_Min.y = min(tMin.y, tMax.y);
+	real_Min.z = min(tMin.z, tMax.z);
+
+	D3DXVECTOR3 real_Max;
+	real_Max.x = max(tMin.x, tMax.x);
+	real_Max.y = max(tMin.y, tMax.y);
+	real_Max.z = max(tMin.z, tMax.z);
+
+	float minmax = min(min(real_Max.x, real_Max.y), real_Max.z);
+	float maxmin = max(max(real_Min.x, real_Min.y), real_Min.z);
+
+	if (minmax >= maxmin)
+	{
+		return true;
+	}
+	return false;
+}
+
 
 Collision::Collision()
 {

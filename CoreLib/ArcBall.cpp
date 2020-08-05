@@ -2,7 +2,7 @@
 
 bool	ArcBall::Init()
 {
-	SetWindow(g_rtClient.right, g_rtClient.bottom, 0.9);
+	SetWindow(float(g_rtClient.right), float(g_rtClient.bottom), 0.9);
 	return true;
 }
 

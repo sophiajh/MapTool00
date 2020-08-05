@@ -4,7 +4,7 @@
 #include "SoundMgr.h"
 #include "DxHelperEx.h"
 #include "DxWrite.h"
-#include "DxState.h"
+
 #include "DebugCam.h"
 
 class Core : public Device
@@ -17,8 +17,6 @@ public:
 	bool m_bDepthState;
 	DxWrite m_coredxWrite;
 	
-	//ModelCamera m_Camera[1];
-	//Camera		m_Camera[3];
 	int			m_iCameraNum = 0;
 	Camera*		m_pCurrCamera;
 	DebugCam	m_DebugCam;

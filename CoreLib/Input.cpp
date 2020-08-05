@@ -53,8 +53,12 @@ bool Input::Frame() //매 프레임마다 갱신된다. 1)마우스 위치 2)키 이전/현재 상태 
 	g_ActionInput.bAKey = KeyCheck('A');
 	g_ActionInput.bSKey = KeyCheck('S');
 	g_ActionInput.bDKey = KeyCheck('D');
+	g_ActionInput.bQKey = KeyCheck('Q');
+	g_ActionInput.bEKey = KeyCheck('E');
+
 	g_ActionInput.bLKey = KeyCheck('L');
 	g_ActionInput.bOKey = KeyCheck('O');
+
 	g_ActionInput.bSpaceKey = KeyCheck(VK_SPACE);
 	g_ActionInput.bTabKey = KeyCheck(VK_TAB);
 	g_ActionInput.bDownKey = KeyCheck(VK_DOWN);

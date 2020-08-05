@@ -73,19 +73,27 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(DXSDK_DIR)Include;</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86$(LibraryPath);$(DXSDK_DIR)Lib\x86</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\..\output\Debug</OutDir>
-    <IntDir>..\..\output\Debug\DXCoreLib</IntDir>
+    <OutDir>..\..\output\Debug\</OutDir>
+    <IntDir>..\..\output\Debug\DXCoreLib\</IntDir>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(DXSDK_DIR)Include;</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64$(LibraryPath);$(DXSDK_DIR)Lib\x64</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(DXSDK_DIR)Include;</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86$(LibraryPath);$(DXSDK_DIR)Lib\x86</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>../../output/Debug</OutDir>
     <IntDir>../../output/Debug/DXCoreLib</IntDir>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(DXSDK_DIR)Include;</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64$(LibraryPath);$(DXSDK_DIR)Lib\x64</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -218,7 +226,9 @@ copy "..\\..\\FMOD\\lib\\x64\\*.dll" "..\\..\\output\\debug"</Command>
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelCamera.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="ScriptMgr.cpp" />
+    <ClCompile Include="Select.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="SoundMgr.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -247,7 +257,10 @@ copy "..\\..\\FMOD\\lib\\x64\\*.dll" "..\\..\\output\\debug"</Command>
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelCamera.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="QuadTree.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="ScriptMgr.h" />
+    <ClInclude Include="Select.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="SoundMgr.h" />
     <ClInclude Include="Std.h" />
@@ -258,15 +271,21 @@ copy "..\\..\\FMOD\\lib\\x64\\*.dll" "..\\..\\output\\debug"</Command>
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="HLSL.vsh">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    <None Include="HLSL.psh">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <FileType>Document</FileType>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="HLSL.psh">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    <ResourceCompile Include="DXCoreLib.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\MapTool\CoreLib\Field.psh">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\MapTool\CoreLib\HLSL.vsh">
       <FileType>Document</FileType>
     </None>
   </ItemGroup>

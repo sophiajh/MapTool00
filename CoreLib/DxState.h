@@ -9,6 +9,11 @@ namespace DX
 	public:
 		static ID3D11BlendState*	m_pAlphaBlend;
 		static ID3D11BlendState*	m_pAlphaBlendDisable;
+		//
+		static ID3D11BlendState*	m_pAlphaBlend2;
+		static ID3D11BlendState*	m_pAlphaBlendMinus;
+
+
 
 		static ID3D11RasterizerState*	m_pRSWireFrame;
 		static ID3D11RasterizerState*	m_pRSSolidFrame;

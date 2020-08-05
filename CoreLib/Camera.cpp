@@ -79,6 +79,10 @@ void Camera::UpdateVector()
 	D3DXVec3Normalize(&m_vUp, &m_vUp);
 	D3DXVec3Normalize(&m_vRight, &m_vRight);
 	
+	m_matWorld._41 = m_vPosition.x;
+	m_matWorld._42 = m_vPosition.y;
+	m_matWorld._43 = m_vPosition.z;
+
 	m_Frustum.CreateFrustum(m_MatView, m_matProj);
 }
 void Camera::Forward()
@@ -99,6 +103,16 @@ void Camera::Left()
 void Camera::Right()
 {
 	m_vPosition = m_vPosition + m_vRight * g_fSecondPerFrame * 50.0f * m_fSpeed;
+}
+
+void Camera::Up()
+{
+	m_vPosition = m_vPosition + m_vUp * g_fSecondPerFrame * 50.0f * m_fSpeed;
+}
+
+void Camera::Down()
+{
+	m_vPosition = m_vPosition - m_vUp * g_fSecondPerFrame * 50.0f * m_fSpeed;
 }
 
 void Camera::Frame()

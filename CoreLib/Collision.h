@@ -14,6 +14,7 @@ public:
 
 	static void	Interrupt(xPoint&, RECT, xPoint&, RECT /*Object Objrt, Object Objrt2*/);
 
+	static bool RayToAABB(Ray* pRay, KJHBOX* pBox);
 public:
 	Collision();
 	~Collision();

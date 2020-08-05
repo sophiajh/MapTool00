@@ -1,8 +1,4 @@
 #pragma once
-#include "Std.h"
-//#include "Bitmap.h"
-#include "DxHelperEx.h"
-#include "Texture.h"
 #include "Model.h"
 class Object : public Model
 {

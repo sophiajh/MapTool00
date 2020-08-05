@@ -49,8 +49,12 @@ struct InputAction
 	DWORD	bAKey;
 	DWORD	bSKey;
 	DWORD	bDKey;
+	DWORD	bEKey;
+	DWORD	bQKey;
+
 	DWORD	bLKey;
 	DWORD	bOKey;
+
 	DWORD	bSpaceKey;
 	DWORD	bLeftClick;
 	DWORD	bMiddleClick;
@@ -170,6 +174,13 @@ struct Vertex
 		t.x = tx;
 		t.y = ty;
 	}
+};
+
+
+struct Ray
+{
+	D3DXVECTOR3	Origin;
+	D3DXVECTOR3	Direction;
 };
 
 //--------------------------------

@@ -263,36 +263,47 @@ BoxObject::~BoxObject()
 HRESULT LineObject::CreateVertexData()
 {
 	HRESULT hr = S_OK;
-	m_VertexList.resize(6);
+	m_VertexList.resize(2);
 	m_VertexList[0].Position	= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_VertexList[0].Normal		= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_VertexList[0].Color		= D3DXVECTOR4(1.0f, 0.0f, 0.0f, 1.0f);
+	m_VertexList[0].Color		= D3DXVECTOR4(1.0f, 1.0f, 1.0f, 1.0f);
 	m_VertexList[0].Texture		= D3DXVECTOR2(0.0f, 0.0f);
 
-	m_VertexList[1].Position	= D3DXVECTOR3(1000.0f, 0.0f, 0.0f);
-	m_VertexList[1].Normal		= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_VertexList[1].Color		= D3DXVECTOR4(1.0f, 0.0f, 0.0f, 1.0f);
-	m_VertexList[1].Texture		= D3DXVECTOR2(1.0f, 0.0f);
+	m_VertexList[1].Position = D3DXVECTOR3(1.0f, 0.0f, 0.0f);
+	m_VertexList[1].Normal = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_VertexList[1].Color = D3DXVECTOR4(1.0f, 1.0f, 1.0f, 1.0f);
+	m_VertexList[1].Texture = D3DXVECTOR2(1.0f, 0.0f);
 
-	m_VertexList[2].Position	= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_VertexList[2].Normal		= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_VertexList[2].Color		= D3DXVECTOR4(0.0f, 1.0f, 0.0f, 1.0f);
-	m_VertexList[2].Texture		= D3DXVECTOR2(0.0f, 0.0f);
+	//m_VertexList.resize(6);
+	//m_VertexList[0].Position = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	//m_VertexList[0].Normal = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	//m_VertexList[0].Color = D3DXVECTOR4(1.0f, 0.0f, 0.0f, 1.0f);
+	//m_VertexList[0].Texture = D3DXVECTOR2(0.0f, 0.0f);
 
-	m_VertexList[3].Position	= D3DXVECTOR3(0.0f, 1000.0f, 0.0f);
-	m_VertexList[3].Normal		= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_VertexList[3].Color		= D3DXVECTOR4(0.0f, 1.0f, 0.0f, 1.0f);
-	m_VertexList[3].Texture		= D3DXVECTOR2(1.0f, 0.0f);
+	//m_VertexList[1].Position	= D3DXVECTOR3(1000.0f, 0.0f, 0.0f);
+	//m_VertexList[1].Normal		= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	//m_VertexList[1].Color		= D3DXVECTOR4(1.0f, 0.0f, 0.0f, 1.0f);
+	//m_VertexList[1].Texture		= D3DXVECTOR2(1.0f, 0.0f);
 
-	m_VertexList[4].Position	= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_VertexList[4].Normal		= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_VertexList[4].Color		= D3DXVECTOR4(0.0f, 0.0f, 1.0f, 1.0f);
-	m_VertexList[4].Texture		= D3DXVECTOR2(0.0f, 0.0f);
-
-	m_VertexList[5].Position	= D3DXVECTOR3(0.0f, 0.0f, 1000.0f);
-	m_VertexList[5].Normal		= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_VertexList[5].Color		= D3DXVECTOR4(0.0f, 0.0f, 1.0f, 1.0f);
-	m_VertexList[5].Texture		= D3DXVECTOR2(1.0f, 0.0f);
+	//m_VertexList[2].Position	= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	//m_VertexList[2].Normal		= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	//m_VertexList[2].Color		= D3DXVECTOR4(0.0f, 1.0f, 0.0f, 1.0f);
+	//m_VertexList[2].Texture		= D3DXVECTOR2(0.0f, 0.0f);
+	//
+	//m_VertexList[3].Position	= D3DXVECTOR3(0.0f, 1000.0f, 0.0f);
+	//m_VertexList[3].Normal		= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	//m_VertexList[3].Color		= D3DXVECTOR4(0.0f, 1.0f, 0.0f, 1.0f);
+	//m_VertexList[3].Texture		= D3DXVECTOR2(1.0f, 0.0f);
+	//
+	//m_VertexList[4].Position	= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	//m_VertexList[4].Normal		= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	//m_VertexList[4].Color		= D3DXVECTOR4(0.0f, 0.0f, 1.0f, 1.0f);
+	//m_VertexList[4].Texture		= D3DXVECTOR2(0.0f, 0.0f);
+	//
+	//m_VertexList[5].Position	= D3DXVECTOR3(0.0f, 0.0f, 1000.0f);
+	//m_VertexList[5].Normal		= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	//m_VertexList[5].Color		= D3DXVECTOR4(0.0f, 0.0f, 1.0f, 1.0f);
+	//m_VertexList[5].Texture		= D3DXVECTOR2(1.0f, 0.0f);
 	return hr;
 }
 
@@ -308,5 +319,70 @@ LineObject::LineObject()
 }
 
 LineObject::~LineObject()
+{
+}
+
+
+HRESULT AxisObject::CreateVertexData()
+{
+	HRESULT hr = S_OK;
+	
+	m_VertexList.resize(6);
+	
+	//int iVertex = 0;
+	//for (int iNumLine = 0; iNumLine < 3; iNumLine++)
+	//{
+	//	LineObject* SingleLine = new LineObject;
+	//
+	//	m_VertexList[iVertex] = SingleLine->m_VertexList[0];
+	//	m_VertexList[iVertex+1] = SingleLine->m_VertexList[1];
+	//
+	//	iVertex += 2;
+	//}
+
+	m_VertexList[0].Position = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_VertexList[0].Normal = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_VertexList[0].Color = D3DXVECTOR4(1.0f, 0.0f, 0.0f, 1.0f);
+	m_VertexList[0].Texture = D3DXVECTOR2(0.0f, 0.0f);
+
+	m_VertexList[1].Position	= D3DXVECTOR3(1000.0f, 0.0f, 0.0f);
+	m_VertexList[1].Normal		= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_VertexList[1].Color		= D3DXVECTOR4(1.0f, 0.0f, 0.0f, 1.0f);
+	m_VertexList[1].Texture		= D3DXVECTOR2(1.0f, 0.0f);
+
+	m_VertexList[2].Position	= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_VertexList[2].Normal		= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_VertexList[2].Color		= D3DXVECTOR4(0.0f, 1.0f, 0.0f, 1.0f);
+	m_VertexList[2].Texture		= D3DXVECTOR2(0.0f, 0.0f);
+	
+	m_VertexList[3].Position	= D3DXVECTOR3(0.0f, 1000.0f, 0.0f);
+	m_VertexList[3].Normal		= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_VertexList[3].Color		= D3DXVECTOR4(0.0f, 1.0f, 0.0f, 1.0f);
+	m_VertexList[3].Texture		= D3DXVECTOR2(1.0f, 0.0f);
+	
+	m_VertexList[4].Position	= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_VertexList[4].Normal		= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_VertexList[4].Color		= D3DXVECTOR4(0.0f, 0.0f, 1.0f, 1.0f);
+	m_VertexList[4].Texture		= D3DXVECTOR2(0.0f, 0.0f);
+	
+	m_VertexList[5].Position	= D3DXVECTOR3(0.0f, 0.0f, 1000.0f);
+	m_VertexList[5].Normal		= D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_VertexList[5].Color		= D3DXVECTOR4(0.0f, 0.0f, 1.0f, 1.0f);
+	m_VertexList[5].Texture		= D3DXVECTOR2(1.0f, 0.0f);
+	return hr;
+}
+
+bool AxisObject::PostRender(ID3D11DeviceContext* pContext)
+{
+	pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+	m_DxHelper.PostRender(pContext, m_DxHelper.m_iNumIndex);
+	return true;
+}
+
+AxisObject::AxisObject()
+{
+}
+
+AxisObject::~AxisObject()
 {
 }

@@ -1,7 +1,7 @@
 #pragma once
-#include "Std.h"
 #include "ArcBall.h"
 #include "Frusturm.h"
+
 class Camera
 {
 public:
@@ -38,6 +38,8 @@ public:
 	void Backward();
 	void Left();
 	void Right();
+	void Up();
+	void Down();
 
 	bool Init();
 	virtual void Frame();

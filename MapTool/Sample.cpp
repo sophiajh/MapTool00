@@ -192,9 +192,6 @@ bool Sample::Release()
 			m_TestField->m_pSrcAlphaTexture.Get()->Release();
 		if (m_TestField->m_pDestAlphaTexture)
 			m_TestField->m_pDestAlphaTexture.Get()->Release();
-		//m_TestField->Release();
-		//delete m_TestField;
-		//m_TestField = nullptr;
 	}
 	_CrtDumpMemoryLeaks();
 
